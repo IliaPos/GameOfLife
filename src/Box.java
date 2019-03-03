@@ -22,8 +22,10 @@ public class Box extends JButton {
         setBounds(x * Config.SIZE, y * Config.SIZE, Config.SIZE, Config.SIZE);
         setBorder(BorderFactory.createLineBorder(Config.borderColor, 1));
         setBackground(Config.getColor(Status.NONE));
-        setActionCommand(ButtonListener.Actions.CLICK.name());
-        addActionListener(new ButtonListener(this.cell));
+
+        addActionListener(e -> {
+            cell.turn();
+        });
 
 
     }
