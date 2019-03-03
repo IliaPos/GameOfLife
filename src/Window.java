@@ -1,13 +1,17 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Window implements Runnable {
+    boolean isButtonClicked = false;
+    JButton buttonStop;
+    JButton buttonStart;
+
     TimerListener tl = new TimerListener();
+    Timer generaion = new Timer(Config.SLEEPMS, tl);
     TimerListen t2 = new TimerListen();
     Window window;
-    JButton buttonStart;
+
     JMenuBar menuBar;
     JFrame frame;
     Box[][] boxes;
@@ -20,25 +24,34 @@ public class Window implements Runnable {
         initBoxes();
         refreshD();
         // initGeneration();
-    //     initTimer();
+        //     initTimer();
     }
 
 
     private void initMenu() {
         menuBar = new JMenuBar();
         menuBar.setVisible(true);
-
-        buttonStart = new JButton("Start/stop");
-    //    buttonStart.setActionCommand(ButtonListener.Actions.START.name());
+        buttonStart = new JButton("Start");
         menuBar.add(buttonStart);
-    //    buttonStart.addActionListener(new ButtonListener());
+        buttonStop = new JButton("stop");
+        menuBar.add(buttonStop);
+
+
         buttonStart.addActionListener(e -> {
 
-            initTimer();
-            System.out.println("Works Start");
+            System.out.println("button is enabled");
+            isButtonClicked = true;
 
+            initTimer();
         });
 
+        buttonStop.addActionListener(e -> {
+
+            System.out.println("button is disabled");
+            isButtonClicked = false;
+
+            initTimer();
+        });
 
 
         JButton buttonOneStep = new JButton("One step");
@@ -56,8 +69,6 @@ public class Window implements Runnable {
     }
 
 
-
-
     void initframe() {
         frame = new JFrame();
         frame.setJMenuBar(menuBar);
@@ -67,7 +78,7 @@ public class Window implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setTitle("Life of Game");
-       // frame.pack();
+        // frame.pack();
     }
 
 
@@ -98,28 +109,33 @@ public class Window implements Runnable {
             boxes[x][10].setColor();
         }
     }
- /*   public void initGeneration() {
-        boolean flop = false;
-        while(true){
-            flop = !flop;
-            for (int x = 0; x < Config.WIDTH; x++) {
-                for (int y = 0; y < Config.HEIGHT; y++) {
-                    if (flop)
-                        boxes[x][y].step1();
-                    else
-                        boxes[x][y].step2();
-
-                }
-
-            }
-        }
-    }*/
+//    public void initGeneration() {
+//        boolean flop = false;
+//        while(true){
+//            flop = !flop;
+//            for (int x = 0; x < Config.WIDTH; x++) {
+//                for (int y = 0; y < Config.HEIGHT; y++) {
+//                    if (flop)
+//                        boxes[x][y].step1();
+//                    else
+//                        boxes[x][y].step2();
+//
+//                }
+//
+//            }
+//        }
+//    }
 
     public void initTimer() {
-
-        Timer generaion = new Timer(Config.SLEEPMS, tl);
-
-        generaion.start();
+        if(isButtonClicked){
+            generaion.start();
+            buttonStart.setEnabled(false);
+            buttonStop.setEnabled(true);
+        }else {
+            generaion.stop();
+            buttonStop.setEnabled(false);
+            buttonStart.setEnabled(true);
+        }
 
     }
 
@@ -159,7 +175,6 @@ public class Window implements Runnable {
     }
 
 
-
     private class TimerListener implements ActionListener {
 
         boolean flop = false;
@@ -177,6 +192,7 @@ public class Window implements Runnable {
                 }
 
             }
+
 
         }
 
