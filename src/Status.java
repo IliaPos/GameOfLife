@@ -26,9 +26,20 @@ public enum Status {
                 return this;
         }
     }
-    public boolean isCell(){
-        return this == LIVE || this == DIED;
+
+    public boolean isCell() {
+        switch (this) {
+            case LIVE:
+                return true;
+            case DIED:
+                return true;
+            default:
+                return false;
+
+        }
 
     }
+
+
 
 }

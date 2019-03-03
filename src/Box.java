@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
 
 public class Box extends JButton {
+    Status status;
 
 
     Window window;
@@ -46,9 +47,12 @@ public class Box extends JButton {
         setColor();
 
     }
-    public void refresh(){
+
+    public void refresh() {
         setColor();
     }
+
+
 }
 
 

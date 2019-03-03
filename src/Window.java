@@ -4,8 +4,10 @@ import java.awt.event.ActionListener;
 
 public class Window implements Runnable {
     boolean isButtonClicked = false;
+    boolean isCleanClicked = false;
     JButton buttonStop;
     JButton buttonStart;
+    JButton buttonClean;
 
     TimerListener tl = new TimerListener();
     Timer generaion = new Timer(Config.SLEEPMS, tl);
@@ -14,8 +16,9 @@ public class Window implements Runnable {
 
     JMenuBar menuBar;
     JFrame frame;
+    JFrame settingsFrame;
     Box[][] boxes;
-    Box box;
+
 
     @Override
     public void run() {
@@ -62,11 +65,29 @@ public class Window implements Runnable {
 
         JButton buttonSetup = new JButton("Setup");
         menuBar.add(buttonSetup);
+        buttonSetup.addActionListener(e -> {
+            settingsFrame = new JFrame();
+          //  settingsFrame.setJMenuBar(menuBar);
+            settingsFrame.getContentPane().setLayout(null);
+            settingsFrame.setSize(Config.SETUPSIZE * Config.HEIGHT, Config.SETUPSIZE * Config.WIDTH);
+       //     settingsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            settingsFrame.setLocationRelativeTo(null);
+            settingsFrame.setVisible(true);
+            settingsFrame.setTitle("Setup");
 
-        JButton buttonClean = new JButton("clean");
+        });
+
+        buttonClean = new JButton("clean");
         menuBar.add(buttonClean);
+        buttonClean.addActionListener(e -> {
+            cleanRefresh();
+            System.out.println("clean was");
+
+        });
 
     }
+
+
 
 
     void initframe() {
@@ -127,11 +148,11 @@ public class Window implements Runnable {
 //    }
 
     public void initTimer() {
-        if(isButtonClicked){
+        if (isButtonClicked) {
             generaion.start();
             buttonStart.setEnabled(false);
             buttonStop.setEnabled(true);
-        }else {
+        } else {
             generaion.stop();
             buttonStop.setEnabled(false);
             buttonStart.setEnabled(true);
@@ -152,6 +173,19 @@ public class Window implements Runnable {
             }
 
         }
+    }
+    public void cleanRefresh() {
+        for (int x = 0; x < Config.WIDTH; x++) {
+            for (int y = 0; y < Config.HEIGHT; y++) {
+
+                boxes[x][y].cell.status = Status.NONE;
+
+             //   boxes[x][y].refresh();
+
+            }
+
+        }
+
     }
 
 
