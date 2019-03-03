@@ -3,20 +3,46 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Window implements Runnable {
-
+    Window window;
+    JButton buttonStart;
+    JMenuBar menuBar;
     JFrame frame;
     Box[][] boxes;
+    Box box;
 
     @Override
     public void run() {
+        initMenu();
         initframe();
         initBoxes();
+        // initGeneration();
         initTimer();
+    }
+
+
+    private void initMenu() {
+        menuBar = new JMenuBar();
+        menuBar.setVisible(true);
+
+        buttonStart = new JButton("Start");
+        menuBar.add(buttonStart);
+        //  buttonStart.addActionListener(new ButtonListener(this.window));
+
+        JButton buttonOneStep = new JButton("One step");
+        menuBar.add(buttonOneStep);
+
+        JButton buttonSetup = new JButton("Setup");
+        menuBar.add(buttonSetup);
+
+        JButton buttonClean = new JButton("clean");
+        menuBar.add(buttonClean);
+
     }
 
 
     void initframe() {
         frame = new JFrame();
+        frame.setJMenuBar(menuBar);
         frame.getContentPane().setLayout(null);
         frame.setSize(Config.SIZE * Config.WIDTH, Config.SIZE * Config.HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,12 +78,32 @@ public class Window implements Runnable {
             boxes[x][10].setColor();
         }
     }
+ /*   public void initGeneration() {
+        boolean flop = false;
+        while(true){
+            flop = !flop;
+            for (int x = 0; x < Config.WIDTH; x++) {
+                for (int y = 0; y < Config.HEIGHT; y++) {
+                    if (flop)
+                        boxes[x][y].step1();
+                    else
+                        boxes[x][y].step2();
 
-    private void initTimer() {
+                }
+
+            }
+        }
+    }*/
+
+    public void initTimer() {
         TimerListener tl = new TimerListener();
         Timer timer = new Timer(Config.SLEEPMS, tl);
+
+
         timer.start();
+
     }
+
 
     private class TimerListener implements ActionListener {
         boolean flop = false;
@@ -77,5 +123,6 @@ public class Window implements Runnable {
             }
 
         }
+
     }
 }
