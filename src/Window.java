@@ -159,16 +159,21 @@ public class Window implements Runnable {
         }
 
     }
-
+    boolean flop = false;
     public void oneStep() {
-        boolean flop = false;
+
         flop = !flop;
         for (int x = 0; x < Config.WIDTH; x++) {
             for (int y = 0; y < Config.HEIGHT; y++) {
-                if (flop)
+                if (flop) {
                     boxes[x][y].step1();
-                else
+                    System.out.println("step1");
+                }
+                else{
                     boxes[x][y].step2();
+                    System.out.println("step2");
+                }
+
 
             }
 
