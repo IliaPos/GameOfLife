@@ -1,8 +1,11 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Window implements Runnable {
+    TimerListener tl = new TimerListener();
+    TimerListen t2 = new TimerListen();
     Window window;
     JButton buttonStart;
     JMenuBar menuBar;
@@ -15,8 +18,9 @@ public class Window implements Runnable {
         initMenu();
         initframe();
         initBoxes();
+        refreshD();
         // initGeneration();
-        initTimer();
+    //     initTimer();
     }
 
 
@@ -24,12 +28,24 @@ public class Window implements Runnable {
         menuBar = new JMenuBar();
         menuBar.setVisible(true);
 
-        buttonStart = new JButton("Start");
+        buttonStart = new JButton("Start/stop");
+    //    buttonStart.setActionCommand(ButtonListener.Actions.START.name());
         menuBar.add(buttonStart);
-        //  buttonStart.addActionListener(new ButtonListener(this.window));
+    //    buttonStart.addActionListener(new ButtonListener());
+        buttonStart.addActionListener(e -> {
+
+            initTimer();
+            System.out.println("Works Start");
+
+        });
+
+
 
         JButton buttonOneStep = new JButton("One step");
         menuBar.add(buttonOneStep);
+        buttonOneStep.addActionListener(e -> {
+            oneStep();
+        });
 
         JButton buttonSetup = new JButton("Setup");
         menuBar.add(buttonSetup);
@@ -38,6 +54,8 @@ public class Window implements Runnable {
         menuBar.add(buttonClean);
 
     }
+
+
 
 
     void initframe() {
@@ -49,7 +67,9 @@ public class Window implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setTitle("Life of Game");
+       // frame.pack();
     }
+
 
     void initBoxes() {
         boxes = new Box[Config.WIDTH][Config.HEIGHT];
@@ -96,16 +116,52 @@ public class Window implements Runnable {
     }*/
 
     public void initTimer() {
-        TimerListener tl = new TimerListener();
-        Timer timer = new Timer(Config.SLEEPMS, tl);
 
+        Timer generaion = new Timer(Config.SLEEPMS, tl);
 
-        timer.start();
+        generaion.start();
 
     }
 
+    public void oneStep() {
+        boolean flop = false;
+        flop = !flop;
+        for (int x = 0; x < Config.WIDTH; x++) {
+            for (int y = 0; y < Config.HEIGHT; y++) {
+                if (flop)
+                    boxes[x][y].step1();
+                else
+                    boxes[x][y].step2();
+
+            }
+
+        }
+    }
+
+
+    public void refreshD() {
+        Timer refresh = new Timer(25, t2);
+        refresh.start();
+    }
+
+    public class TimerListen implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            for (int x = 0; x < Config.WIDTH; x++) {
+                for (int y = 0; y < Config.HEIGHT; y++) {
+                    boxes[x][y].refresh();
+
+                }
+
+            }
+
+        }
+    }
+
+
 
     private class TimerListener implements ActionListener {
+
         boolean flop = false;
 
         @Override
@@ -125,4 +181,6 @@ public class Window implements Runnable {
         }
 
     }
+
+
 }

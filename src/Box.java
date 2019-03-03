@@ -1,24 +1,32 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
+
 public class Box extends JButton {
 
+
+    Window window;
+
     Cell cell;
+
     public Box(int x, int y) {
         super();
+
 
         cell = new Cell();
         setBounds(x * Config.SIZE, y * Config.SIZE, Config.SIZE, Config.SIZE);
         setBorder(BorderFactory.createLineBorder(Config.borderColor, 1));
         setBackground(Config.getColor(Status.NONE));
+        setActionCommand(ButtonListener.Actions.CLICK.name());
         addActionListener(new ButtonListener(this.cell));
 
+
     }
-
-
-
 
 
     public void setColor() {
@@ -36,4 +44,10 @@ public class Box extends JButton {
         setColor();
 
     }
+    public void refresh(){
+        setColor();
+    }
 }
+
+
+

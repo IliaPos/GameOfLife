@@ -1,8 +1,12 @@
+import javax.swing.*;
 import java.util.ArrayList;
+
+
 
 public class Cell {
     ArrayList<Cell> near;
     Status status;
+
 
     public Cell() {
         status = Status.NONE;
@@ -39,4 +43,10 @@ public class Cell {
     public void turn() {
         status = status.isCell() ? Status.NONE : Status.LIVE;
     }
+
+
+
+
+
+
 }
